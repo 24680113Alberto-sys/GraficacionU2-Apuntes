@@ -1,201 +1,564 @@
-#  Proyecto: Graficación 2D en Blender
+# Unidad 2: Graficación 2D
+# 2.1 Transformaciones Bidimensionales
+2.2 Representación Matricial
 
-##  Descripción
+En la graficación por computadora, la manipulación espacial de objetos bidimensionales se realiza mediante transformaciones geométricas. Para optimizar el procesamiento, estas se modelan como transformaciones afines utilizando coordenadas homogéneas.
 
-Este repositorio contiene la implementación de conceptos fundamentales de **Graficación 2D** utilizando **Blender y Python (bpy)**. Está diseñado como material académico para la Unidad 2.
+Las coordenadas homogéneas permiten representar un punto 2D $(x, y)$ como un vector:
 
----
+(
+𝑥
+,
+𝑦
+,
+1
+)
+(x,y,1)
 
-##  Estructura del Proyecto
+Esto permite unificar operaciones (como la traslación) en multiplicaciones de matrices, facilitando su implementación en hardware gráfico.
 
-```
-Graficacion2D-Blender/
-│
-├── README.md
-├── requirements.txt
-├── src/
-│   ├── transformaciones/
-│   │   ├── traslacion.py
-│   │   ├── escalamiento.py
-│   │   ├── rotacion.py
-│   │   └── sesgado.py
-│   │
-│   ├── matrices/
-│   │   └── transformaciones_matriciales.py
-│   │
-│   ├── curvas/
-│   │   ├── bezier.py
-│   │   └── bspline.py
-│   │
-│   ├── fractales/
-│   │   └── fractal.py
-│   │
-│   ├── fuentes/
-│   │   └── texto.py
-│   │
-│   └── control/
-│       └── control_teclas.py
-│
+ Ecuación general de transformación
 
-```
+𝑃
+′
+=
+𝑀
+⋅
+𝑃
+P
+′
+=M⋅P
 
----
+Donde:
 
-#  Instalación
+$P'$ → punto transformado
+$M$ → matriz de transformación
+$P$ → punto original
 
-1. Descargar e instalar Blender
-2. Clonar el repositorio:
+# 2.1.1 Traslación
 
-```bash
-git clone https://github.com/tu_usuario/graficacion2d-blender.git
-cd graficacion2d-blender
-```
+La traslación consiste en mover un objeto a una nueva posición mediante un vector $(t_x, t_y)$.
 
-3. Ejecutar scripts en Blender:
+[
+𝑥
+′
 
-* Ir a "Scripting"
-* Abrir archivo .py
-* Ejecutar
 
----
+𝑦
+′
 
-#  Contenido
 
-## 2.1 Transformaciones Bidimensionales
+1
+]
+=
+[
+1
+	
+0
+	
+𝑡
+𝑥
 
-###  Traslación
 
-```python
-import bpy
+0
+	
+1
+	
+𝑡
+𝑦
 
-obj = bpy.context.active_object
-obj.location.x += 2
-obj.location.y += 1
-```
 
-###  Escalamiento
+0
+	
+0
+	
+1
+]
+[
+𝑥
 
-```python
-obj.scale.x *= 2
-obj.scale.y *= 2
-```
 
-###  Rotación
+𝑦
 
-```python
-import math
-obj.rotation_euler[2] += math.radians(45)
-```
 
-###  Sesgado (Shear)
+1
+]
+	​
 
-```python
-import bmesh
-import mathutils
+x
+′
+y
+′
+1
+	​
 
-obj = bpy.context.active_object
-mesh = obj.data
-bm = bmesh.new()
-bm.from_mesh(mesh)
+	​
 
-for v in bm.verts:
-    v.co.x += v.co.y * 0.5
+=
+	​
 
-bm.to_mesh(mesh)
-bm.free()
-```
+1
+0
+0
+	​
 
----
+0
+1
+0
+	​
 
-## 2.2 Representación Matricial
+t
+x
+	​
 
-```python
-import mathutils
+t
+y
+	​
 
-traslacion = mathutils.Matrix.Translation((2, 1, 0))
-rotacion = mathutils.Matrix.Rotation(1.57, 4, 'Z')
-escala = mathutils.Matrix.Scale(2, 4)
+1
+	​
 
-transformacion = traslacion @ rotacion @ escala
+	​
 
-obj.matrix_world = transformacion
-```
+	​
 
----
+x
+y
+1
+	​
 
-##  Control con teclas
+	​
 
-```python
-import bpy
 
-class MoverObjeto(bpy.types.Operator):
-    bl_idname = "wm.mover_objeto"
-    bl_label = "Mover Objeto"
+# 2.1.2 Escalamiento
 
-    def modal(self, context, event):
-        obj = context.object
+Modifica el tamaño de un objeto mediante factores de escala $s_x$ y $s_y$.
 
-        if event.type == 'LEFT_ARROW':
-            obj.location.x -= 0.1
-        elif event.type == 'RIGHT_ARROW':
-            obj.location.x += 0.1
+$s > 1$ → agranda
+$0 < s < 1$ → reduce
+$s < 0$ → refleja
 
-        return {'RUNNING_MODAL'}
+[
+𝑥
+′
 
-    def invoke(self, context, event):
-        context.window_manager.modal_handler_add(self)
-        return {'RUNNING_MODAL'}
 
-bpy.utils.register_class(MoverObjeto)
-```
+𝑦
+′
 
----
 
-## 2.3 Curvas
+1
+]
+=
+[
+𝑠
+𝑥
+	
+0
+	
+0
 
-###  Bézier
 
-```python
-import bpy
+0
+	
+𝑠
+𝑦
+	
+0
 
-bpy.ops.curve.primitive_bezier_curve_add()
-```
 
-###  B-Spline
+0
+	
+0
+	
+1
+]
+[
+𝑥
 
-```python
-bpy.ops.curve.primitive_nurbs_curve_add()
-```
 
----
+𝑦
 
-## 2.4 Fractales
 
-```python
-import bpy
+1
+]
+	​
 
-def fractal(x, y, size, depth):
-    if depth == 0:
-        return
+x
+′
+y
+′
+1
+	​
 
-    bpy.ops.mesh.primitive_plane_add(size=size, location=(x,y,0))
+	​
 
-    fractal(x+size, y, size/2, depth-1)
-    fractal(x-size, y, size/2, depth-1)
+=
+	​
 
-fractal(0,0,2,3)
-```
+s
+x
+	​
 
----
+0
+0
+	​
 
-## 2.5 Texto y Fuentes
+0
+s
+y
+	​
 
-```python
-import bpy
+0
+	​
 
-bpy.ops.object.text_add()
-obj = bpy.context.object
-obj.data.body = "Hola Mundo"
-```
+0
+0
+1
+	​
+
+	​
+
+	​
+
+x
+y
+1
+	​
+
+	​
+
+
+# 2.1.3 Rotación
+
+Permite girar un objeto un ángulo $\theta$ respecto al origen.
+
+Sentido positivo → antihorario
+
+[
+𝑥
+′
+
+
+𝑦
+′
+
+
+1
+]
+=
+[
+cos
+⁡
+(
+𝜃
+)
+	
+−
+sin
+⁡
+(
+𝜃
+)
+	
+0
+
+
+sin
+⁡
+(
+𝜃
+)
+	
+cos
+⁡
+(
+𝜃
+)
+	
+0
+
+
+0
+	
+0
+	
+1
+]
+[
+𝑥
+
+
+𝑦
+
+
+1
+]
+	​
+
+x
+′
+y
+′
+1
+	​
+
+	​
+
+=
+	​
+
+cos(θ)
+sin(θ)
+0
+	​
+
+−sin(θ)
+cos(θ)
+0
+	​
+
+0
+0
+1
+	​
+
+	​
+
+	​
+
+x
+y
+1
+	​
+
+	​
+
+
+# 2.1.4 Sesgado (Shearing)
+
+Distorsiona un objeto desplazando sus puntos proporcionalmente.
+
+Ejemplo: sesgado en el eje $X$
+
+[
+𝑥
+′
+
+
+𝑦
+′
+
+
+1
+]
+=
+[
+1
+	
+𝑆
+ℎ
+𝑥
+	
+0
+
+
+0
+	
+1
+	
+0
+
+
+0
+	
+0
+	
+1
+]
+[
+𝑥
+
+
+𝑦
+
+
+1
+]
+	​
+
+x
+′
+y
+′
+1
+	​
+
+	​
+
+=
+	​
+
+1
+0
+0
+	​
+
+Sh
+x
+	​
+
+1
+0
+	​
+
+0
+0
+1
+	​
+
+	​
+
+	​
+
+x
+y
+1
+	​
+
+	​
+
+
+#  2.3 Trazo de Líneas Curvas
+
+Las curvas en gráficos computacionales se representan mediante ecuaciones paramétricas:
+
+$x = f(t)$
+$y = f(t)$
+$0 \leq t \leq 1$
+2.3.1 Curvas de Bézier
+
+Son curvas paramétricas definidas por puntos de control.
+
+Características:
+
+Pasan por el primer y último punto
+Los puntos intermedios controlan la forma
+Presentan control global
+ Ecuación general
+
+𝑃
+(
+𝑡
+)
+=
+∑
+𝑖
+=
+0
+𝑛
+(
+𝑛
+𝑖
+)
+(
+1
+−
+𝑡
+)
+𝑛
+−
+𝑖
+𝑡
+𝑖
+𝑃
+𝑖
+P(t)=∑
+i=0
+n
+	​
+
+(
+i
+n
+	​
+
+)(1−t)
+n−i
+t
+i
+P
+i
+	​
+
+
+# 2.3.2 Curvas B-Spline
+
+Mejoran a Bézier mediante:
+
+Control local (modificar un punto no afecta toda la curva)
+Mayor suavidad
+No necesariamente pasan por los puntos de control
+ # 2.4 Fractales
+
+Los fractales son estructuras con:
+
+Autosimilitud
+Dimensión fraccional
+
+Se generan mediante algoritmos iterativos.
+
+ Fórmula base (Mandelbrot / Julia)
+
+𝑧
+𝑛
++
+1
+=
+𝑧
+𝑛
+2
++
+𝑐
+z
+n+1
+	​
+
+=z
+n
+2
+	​
+
++c
+
+Proceso:
+
+Cada píxel representa un valor de $c$
+Se itera la ecuación
+Se evalúa si $|z|$ diverge
+Se asigna color según iteraciones
+# 2.5 Uso y Creación de Fuentes de Texto
+
+Las fuentes digitales (TTF, OTF) son gráficos vectoriales, no mapas de bits.
+
+Características:
+
+Formadas por curvas (Bézier)
+Escalables sin pérdida de calidad
+Se transforman con matrices (rotación, escalado, etc.)
+ Proceso de renderizado
+Interpretación de vértices
+Construcción de contornos
+Triangulación
+Rasterización
+#  Referencias (Formato APA)
+Blender Foundation. (2024). Blender 4.0 Python API Documentation.
+https://docs.blender.org/api/current/
+Foley, J. D., van Dam, A., Feiner, S. K., & Hughes, J. F. (1995).
+Computer graphics: Principles and practice (2.ª ed.). Addison-Wesley.
+Hearn, D., Baker, M. P., & Carithers, W. (2014).
+Computer graphics with OpenGL (4.ª ed.). Pearson.
+Shirley, P., & Marschner, S. (2009).
+Fundamentals of computer graphics (3.ª ed.). CRC Press.
 
 

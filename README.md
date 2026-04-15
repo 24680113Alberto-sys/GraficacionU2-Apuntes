@@ -4,85 +4,34 @@
 
 En la graficación por computadora, la manipulación espacial de objetos bidimensionales se realiza mediante transformaciones geométricas. Para optimizar el procesamiento, estas se modelan como transformaciones afines utilizando coordenadas homogéneas.
 
-Las coordenadas homogéneas permiten representar un punto 2D $(x, y)$ como un vector:
+Las coordenadas homogéneas permiten representar un punto 2D (x, y) como un vector:
 
-(
-𝑥
-,
-𝑦
-,
-1
-)
-(x,y,1)
+(𝑥,𝑦,1)(x,y,1)
 
 Esto permite unificar operaciones (como la traslación) en multiplicaciones de matrices, facilitando su implementación en hardware gráfico.
 
  Ecuación general de transformación
 
-𝑃
-′
-=
-𝑀
-⋅
-𝑃
-P
-′
-=M⋅P
+𝑃′=M⋅P
 
 Donde:
 
-$P'$ → punto transformado
-$M$ → matriz de transformación
-$P$ → punto original
+P' → punto transformado
+M → matriz de transformación
+P → punto original
 
 # 2.1.1 Traslación
 
-La traslación consiste en mover un objeto a una nueva posición mediante un vector $(t_x, t_y)$.
+La traslación consiste en mover un objeto a una nueva posición mediante un vector (t_x, t_y).
 
-[
-𝑥
-′
-
-
-𝑦
-′
-
-
-1
-]
-=
-[
-1
-	
-0
-	
-𝑡
-𝑥
-
-
-0
-	
-1
-	
-𝑡
-𝑦
-
-
-0
-	
-0
-	
-1
-]
-[
-𝑥
-
-
-𝑦
-
-
-1
-]
+[𝑥′𝑦′1]=[1
+	0
+	𝑡𝑥
+	0
+	1
+	𝑡𝑦
+	0	0
+	1][𝑥𝑦1]
 	​
 
 x

@@ -29,7 +29,24 @@ $$\begin{bmatrix} x' \\ y' \\ 1 \end{bmatrix} = \begin{bmatrix} s_x & 0 & 0 \\ 0
 ### 2.1.3. Rotación
 Gira un objeto un ángulo $\theta$ alrededor del origen. La convención indica que ángulos positivos producen rotaciones en sentido **antihorario**.
 * **Matriz de transformación:**
-$$\begin{bmatrix} x' \\ y' \\ 1 \end{bmatrix} = \begin{bmatrix} \cos(\theta) & -\sin(\theta) & 0 \\ \sin(\theta) & \cos(\theta) & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}$$
+$$
+\begin{bmatrix} 
+x' \\ 
+y' \\ 
+1 
+\end{bmatrix} 
+= 
+\begin{bmatrix} 
+\cos(\theta) & -\sin(\theta) & 0 \\ 
+\sin(\theta) & \cos(\theta) & 0 \\ 
+0 & 0 & 1 
+\end{bmatrix} 
+\begin{bmatrix} 
+x \\ 
+y \\ 
+1 
+\end{bmatrix}
+$$
 
 ### 2.1.4. Sesgado (Shearing)
 Distorsiona la forma de un objeto deslizando sus capas internas de manera proporcional a su distancia a un eje. Un sesgado en el eje $X$ dependiente de $y$ (con factor $Sh_x$) se representa como:

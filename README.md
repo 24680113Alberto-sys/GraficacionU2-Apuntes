@@ -1,4 +1,4 @@
-# Graficación por Computadora: Fundamentos de 2D, Curvas y Fractales
+# Unidad 2: Graficación 2D
 
 Este repositorio contiene la documentación detallada sobre los principios de la manipulación espacial bidimensional, el modelado de curvas paramétricas, la generación de fractales y la naturaleza de las fuentes tipográficas digitales.
 

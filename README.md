@@ -138,7 +138,7 @@ Características:
 
 ## Referencias Bibliográficas (Formato APA)
 
-- Blender Foundation. (2024). *Blender 4.0 Python API Documentation*. https://docs.blender.org/api/current/  
+ 
 - Foley, J. D., et al. (1995). *Computer graphics: Principles and practice*. Addison-Wesley  
 - Hearn, D., et al. (2014). *Computer graphics with OpenGL*. Pearson  
 - Shirley, P., & Marschner, S. (2009). *Fundamentals of computer graphics*. CRC Press 
